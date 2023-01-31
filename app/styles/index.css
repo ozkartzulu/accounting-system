@@ -1,0 +1,78 @@
+
+body{
+    font-family: 'Lato', sans-serif;
+}
+.fix-scroll{
+    overflow: hidden;
+}
+
+/* header */
+.header .menu li{
+    position: relative;
+}
+.header .active{
+    /* color: rgba(55, 48, 163, 1); */
+    color: #000;
+}
+.header .submenu{
+    position: absolute;
+    left: 0;
+    top: 100%;
+    display: none;
+}
+
+.header .menu li:hover .submenu{
+    display: block;
+}
+
+/* partner */
+.partner-view .sub-menu form{
+    top: 0;
+    left: 150px;
+}
+.partner-view nav{
+    position: sticky;
+    top: 1rem;
+}
+.grid_partner{
+    display: grid;
+    grid-template-columns: 2fr 5fr;
+}
+
+/* tables */
+.table-four td,
+.table-four th{
+    width: 25%;
+}
+.table-three td,
+.table-three th{
+    width: 33.3333%;
+}
+.table-seven td,
+.table-seven th{
+    width: 14.2857%;
+}
+.table-month{
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 9999;
+    width: 100%;
+    height: 100%;
+    overflow-y: scroll;
+    padding: 40px 50px;
+    background-color: #F3F4F6;
+    color: #000;
+}
+.table-month img{
+    margin-left: auto;
+    cursor: pointer;
+}
+
+input{
+    outline-width: 1px;
+    outline-color: gray;
+}
+.month-box{
+    cursor: pointer;
+}
