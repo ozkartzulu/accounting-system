@@ -1,5 +1,6 @@
 
 import { MongoClient } from 'mongodb'
+import {generateKey} from '~/utils/helpers'
 
 // Connection URL
 const url = 'mongodb://127.0.0.1:27017';
@@ -39,25 +40,110 @@ export async function getPartner(ciSocio) {
     return result;
 }
 
-// Get all objects of gps to first level
+// Get all objects of gps
 export async function getAllGps(){
     let result = ''
     try {
         await client.connect()
         const db = client.db(dbName)
+        const collection = db.collection('gps')
+        result = await collection.find({}).toArray()
+    } catch (error) {
+        console.log(error)
+    }
+    
+    return result;
+}
+
+// Get all objects of air
+export async function getAllAir(){
+    let result = ''
+    try {
+        await client.connect()
+        const db = client.db(dbName)
+        const collection = db.collection('air')
+        result = await collection.find({}).toArray()
+    } catch (error) {
+        console.log(error)
+    }
+    
+    return result;
+}
+
+// Get all objects of pro deport
+export async function getAllDeport(){
+    let result = ''
+    try {
+        await client.connect()
+        const db = client.db(dbName)
+        const collection = db.collection('pro-deport')
+        result = await collection.find({}).toArray()
+    } catch (error) {
+        console.log(error)
+    }
+    
+    return result;
+}
+
+// Get all objects of pro deport
+export async function getAllHanging(){
+    let result = ''
+    try {
+        await client.connect()
+        const db = client.db(dbName)
+        const collection = db.collection('hangings')
+        result = await collection.find({}).toArray()
+    } catch (error) {
+        console.log(error)
+    }
+    
+    return result;
+}
+
+// Get all partners that have change name registered
+export async function getChangeName(){
+    let result = ''
+    try {
+        await client.connect()
+        const db = client.db(dbName)
         const collection = db.collection('socios')
-        result = await collection.aggregate([
-            { $unwind : { path: "$gps", preserveNullAndEmptyArrays: true}},
-            // { $project : {
-            //     name: "$name",
-            //     first_name: "$first_name",
-            //     amount: "$gps.amount"
-            // }},
-            { $group: {
-                _id: {name: "$name", first_name: "$first_name"},
-                amount: { $sum: { $toDouble: "$gps.amount"}}
-            }}
-        ]).toArray()
+        result = await collection.find({
+            'change_name.amount': { $gt: 0 }
+        }).toArray()
+    } catch (error) {
+        console.log(error)
+    }
+    
+    return result;
+}
+
+// Get all partners that have pro accident registered
+export async function getProAccident(){
+    let result = ''
+    try {
+        await client.connect()
+        const db = client.db(dbName)
+        const collection = db.collection('socios')
+        result = await collection.find({
+            'pro_accident.amount': { $gt: 0 }
+        }).toArray()
+    } catch (error) {
+        console.log(error)
+    }
+    
+    return result;
+}
+
+// Get all partners that have pro furniture registered
+export async function getProFurniture(){
+    let result = ''
+    try {
+        await client.connect()
+        const db = client.db(dbName)
+        const collection = db.collection('socios')
+        result = await collection.find({
+            'pro_furniture.amount': { $gt: 0 }
+        }).toArray()
     } catch (error) {
         console.log(error)
     }
@@ -162,7 +248,7 @@ export async function addMonth(ciPartner, data){
             {ci: ciPartner},
             {
                 $push: {
-                    "road_map": {id: data.id, insured: false, weeks: [], fines: [], withdrawn: []}
+                    "road_map": {id: data.id, month: data.month, year: data.year, insured: false, state_insurance: false, state_saving: false, weeks: [], fines: [], withdrawn: [], help: []}
                 }
             }
         )
@@ -172,8 +258,8 @@ export async function addMonth(ciPartner, data){
     } 
 }
 
-// Add object gps to a partner
-export async function addGPS(ciPartner, data){
+// Add month in a partner
+export async function addBasket(ciPartner, data){
     try {
         await client.connect()
         const db = client.db(dbName);
@@ -182,10 +268,102 @@ export async function addGPS(ciPartner, data){
             {ci: ciPartner},
             {
                 $push: {
-                    "gps": {id: data.id, date: data.date, amount: data.amount, check_book: data.check_book, receipt: data.receipt}
+                    "basket": {id: data.id, year: data.year, state_saving: false, list_basket: [], withdrawn: []}
                 }
             }
         )
+        console.log(result)
+    } catch (error) {
+        console.log(error)
+    } 
+}
+
+// Add a item into basket list for a partner
+export async function addBasketSaving(ciPartner, data){
+    try {  
+        await client.connect()
+        const db = client.db(dbName);
+        const collection = db.collection('socios')
+        const result = await collection.updateOne(
+            {ci: ciPartner, "basket.id": data.basket_id},
+            {
+                $push: {
+                    "basket.$.list_basket": {id: data.id, month: data.month, saving: data.saving, book: data.book, receipt: data.receipt, date: data.date }
+                }
+            }
+        )
+        console.log(result)
+    } catch (error) {
+        console.log(error)
+    } 
+}
+
+// Add a item into basket list for a partner
+export async function addBasketWithdrawn(ciPartner, data){
+    try {  
+        await client.connect()
+        const db = client.db(dbName);
+        const collection = db.collection('socios')
+        const result = await collection.updateOne(
+            {ci: ciPartner, "basket.id": data.basket_id},
+            {
+                $push: {
+                    "basket.$.withdrawn": {id: data.id, amount: data.amount, book: data.book, receipt: data.receipt, date: data.date }
+                }
+            }
+        )
+        console.log(result)
+    } catch (error) {
+        console.log(error)
+    } 
+}
+
+// Add object gps
+export async function addGPS(data){
+    try {
+        await client.connect()
+        const db = client.db(dbName);
+        const collection = db.collection('gps')
+        const result = await collection.insertOne(data)
+        console.log(result)
+    } catch (error) {
+        console.log(error)
+    } 
+}
+
+// Add object air
+export async function addAir(data){
+    try {
+        await client.connect()
+        const db = client.db(dbName);
+        const collection = db.collection('air')
+        const result = await collection.insertOne(data)
+        console.log(result)
+    } catch (error) {
+        console.log(error)
+    } 
+}
+
+// Add object pro deport
+export async function addDeport(data){
+    try {
+        await client.connect()
+        const db = client.db(dbName);
+        const collection = db.collection('pro-deport')
+        const result = await collection.insertOne(data)
+        console.log(result)
+    } catch (error) {
+        console.log(error)
+    } 
+}
+
+// Add object hanging minute
+export async function addHanging(data){
+    try {
+        await client.connect()
+        const db = client.db(dbName);
+        const collection = db.collection('hangings')
+        const result = await collection.insertOne(data)
         console.log(result)
     } catch (error) {
         console.log(error)
@@ -202,7 +380,7 @@ export async function addWeek(ciPartner, data){
             {ci: ciPartner, "road_map.id": data.month},
             {
                 $push: {
-                    "road_map.$.weeks": {id: data.week, insurance: data.insurance, saving: data.saving, sheets: data.sheets }
+                    "road_map.$.weeks": {id: data.id, week: data.week, insurance: data.insurance, saving: data.saving, sheets: data.sheets }
                 }
             }
         )
@@ -222,7 +400,7 @@ export async function addFines(ciPartner, data){
             {ci: ciPartner, "road_map.id": data.id_month},
             {
                 $push: {
-                    "road_map.$.fines": {id: data.id_fines, amount: data.amount, description: data.description, date: data.date }
+                    "road_map.$.fines": {id: data.id_fines, amount: data.amount, description: data.description, date: data.date, book: '', receipt: '', amount_pay: 0, date_pay: '' }
                 }
             }
         )
@@ -237,12 +415,12 @@ export async function addWithDrawn(ciPartner, data){
         await client.connect()
         const db = client.db(dbName);
         const collection = db.collection('socios')
-        console.log(data)
+
         const result = await collection.updateOne(
             {ci: ciPartner, "road_map.id": data.id_month},
             {
                 $push: {
-                    "road_map.$.withdrawn": {id: data.id_withdrawn, amount: data.amount, receipt: data.receipt, book: data.book, date: data.date }
+                    "road_map.$.withdrawn": {id: data.id_withdrawn, amount: data.amount, type: data.type, receipt: data.receipt, book: data.book, date: data.date }
                 }
             }
         )
@@ -251,6 +429,157 @@ export async function addWithDrawn(ciPartner, data){
         console.log(error)
     } 
 } 
+
+// Add withdrawn to a partner and change state_insurance state
+export async function addWithDrawnInsurance(ciPartner, data){
+    try {  
+        await client.connect()
+        const db = client.db(dbName);
+        const collection = db.collection('socios')
+        console.log(data)
+        const result = await collection.updateOne(
+            {ci: ciPartner, "road_map.id": data.id_month},
+            {
+                $push: {
+                    "road_map.$.withdrawn": {id: data.id_withdrawn, amount: data.amount, type: data.type, receipt: data.receipt, book: data.book, date: data.date }
+                },
+                $set: {
+                    "road_map.$.state_insurance": true
+                }
+            }
+        )
+        console.log(result)
+    } catch (error) {
+        console.log(error)
+    }
+} 
+
+// Add withdrawn to a partner and change state_saving state
+export async function addWithDrawnSaving(ciPartner, data){
+    try {  
+        await client.connect()
+        const db = client.db(dbName);
+        const collection = db.collection('socios')
+        console.log(data)
+        const result = await collection.updateOne(
+            {ci: ciPartner, "road_map.id": data.id_month},
+            {
+                $push: {
+                    "road_map.$.withdrawn": {id: data.id_withdrawn, amount: data.amount, type: data.type, receipt: data.receipt, book: data.book, date: data.date }
+                },
+                $set: {
+                    "road_map.$.state_saving": true
+                }
+            }
+        )
+        console.log(result)
+    } catch (error) {
+        console.log(error)
+    } 
+} 
+
+// Add a object of help to a month of all partners
+export async function addHelper(data){
+    try {  
+        await client.connect()
+        const db = client.db(dbName);
+        const collection = db.collection('socios')
+        const result = await collection.updateMany(
+            {"road_map.month": data.month, "road_map.year": data.year},
+            {
+                $push: {
+                    "road_map.$[item].help": {id: generateKey(), amount: data.amount, description: data.description, date: data.date, book: '', receipt: '', amount_pay: 0, date_pay: '' }
+                }
+            },
+            {
+                arrayFilters: [
+                    {"item.month": data.month}
+                ]
+            }
+        )
+        console.log(result)
+    } catch (error) {
+        console.log(error)
+    } 
+}
+
+// add name change when a partner new is register
+export async function addChangeName(ciUser, data){
+    try {  
+        await client.connect()
+        const db = client.db(dbName);
+        const collection = db.collection('socios')
+        const result = await collection.updateOne(
+            {ci: ciUser},
+            {
+                $set: {
+                    "change_name": {
+                        id: generateKey(), 
+                        amount: data.amount, 
+                        book: data.book, 
+                        receipt: data.receipt,
+                        date: data.date,
+                    }
+                }
+            }
+        )
+        console.log(result)
+    } catch (error) {
+        console.log(error)
+    } 
+}
+
+// add pro deport when a partner new is register
+export async function addProAccident(ciUser, data){
+    try {  
+        await client.connect()
+        const db = client.db(dbName);
+        const collection = db.collection('socios')
+        const result = await collection.updateOne(
+            {ci: ciUser},
+            {
+                $set: {
+                    "pro_accident": {
+                        id: generateKey(), 
+                        amount: data.amount, 
+                        book: data.book, 
+                        receipt: data.receipt,
+                        date: data.date,
+                    }
+                }
+            }
+        )
+        console.log(result)
+    } catch (error) {
+        console.log(error)
+    } 
+}
+
+// add pro furniture when a partner new is register
+export async function addProFurniture(ciUser, data){
+    try {  
+        await client.connect()
+        const db = client.db(dbName);
+        const collection = db.collection('socios')
+        const result = await collection.updateOne(
+            {ci: ciUser},
+            {
+                $set: {
+                    "pro_furniture": {
+                        id: generateKey(), 
+                        amount: data.amount, 
+                        book: data.book, 
+                        receipt: data.receipt,
+                        date: data.date,
+                    }
+                }
+            }
+        )
+        console.log(result)
+    } catch (error) {
+        console.log(error)
+    } 
+}
 
 export async function updatePartner(data, ciSocio){
     try {
@@ -275,6 +604,62 @@ export async function updateInsured(ciPartner, state, idMonth){
                 $set: {
                     "road_map.$.insured": state
                 }
+            }
+        )
+        console.log(result)
+    } catch (error) {
+        console.log(error)
+    } 
+}
+
+// update the fines
+export async function updateFines(ciPartner, data){
+    try {  
+        await client.connect()
+        const db = client.db(dbName);
+        const collection = db.collection('socios')
+        const result = await collection.updateOne(
+            {ci: ciPartner, "road_map.id": data.idMonth, "road_map.fines.id": data.idFines},
+            {
+                $set: {
+                    "road_map.$[].fines.$[item].book": data.book,
+                    "road_map.$[].fines.$[item].receipt": data.receipt,
+                    "road_map.$[].fines.$[item].amount_pay": data.amount,
+                    "road_map.$[].fines.$[item].date_pay": data.date
+                }
+            },
+            {
+                arrayFilters: [
+                    {"item.id": data.idFines}
+                ]
+            }
+        )
+        console.log(result)
+    } catch (error) {
+        console.log(error)
+    } 
+}
+
+// update help
+export async function updateHelp(ciPartner, data){
+    try {  
+        await client.connect()
+        const db = client.db(dbName);
+        const collection = db.collection('socios')
+        const result = await collection.updateOne(
+            {ci: ciPartner, "road_map.id": data.idMonth, "road_map.help.id": data.idHelp},
+            {
+                $set: {
+                    "road_map.$[].help.$[item].book": data.book,
+                    "road_map.$[].help.$[item].receipt": data.receipt,
+                    "road_map.$[].help.$[item].amount_pay": data.amount,
+                    "road_map.$[].help.$[item].date_pay": data.date
+                }
+            },
+            {
+                arrayFilters: [
+                    {"item.id": data.idHelp}
+                ]
             }
         )
         console.log(result)

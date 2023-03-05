@@ -18,11 +18,7 @@ export async function action({request}){
     if(Object.keys(errors).length){
         return errors
     }
-    console.log(data)
     data['road_map'] = []
-    data['gps'] = []
-    data['insured'] = 'false'
-    console.log(data)
     await addPartner(data)
 
     return redirect('/socios')

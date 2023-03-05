@@ -1,5 +1,6 @@
 import {
   Links,
+  useLoaderData,
   LiveReload,
   Meta,
   Outlet,
@@ -11,6 +12,8 @@ import {
 import styles from '~/styles/app.css'
 import stylesIndex from '~/styles/index.css'
 import Header from '~/components/header'
+import authenticator from "~/services/auth.server";
+import { sessionStorage } from "~/services/session.server";
 
 export function meta(){
   return {
@@ -49,15 +52,28 @@ export function links(){
   ]
 }
 
+export async function loader({request}){
+
+  const session = await sessionStorage.getSession(
+    request.headers.get("Cookie")
+  );
+
+  return session.data.sessionKey?.name ? session.data.sessionKey?.name : ''
+}
+
 export default function App() {
+
+  const user = useLoaderData()
+
   return (
-    <Document>
+    <Document user={user}>
         <Outlet />
     </Document>  
   );
 }
 
-function Document({children}){
+
+function Document({children, user}){
   return (
       <html>
           <head>
@@ -65,7 +81,7 @@ function Document({children}){
               <Links />
           </head>
           <body className="bg-gray-100">
-              <Header/>
+              <Header user={user}/>
               {children}
               {/* <Footer /> */}
               <Scripts />

@@ -3,10 +3,7 @@ function Formulary({client}){
     return (
         <>
             <div className="mb-4">
-                <label
-                    className="text-gray-800"
-                    htmlFor="name"
-                >Nombre:</label>
+                <label className="text-gray-800" htmlFor="name">Nombre:</label>
                 <input 
                     id="name"
                     type="text"
@@ -17,10 +14,7 @@ function Formulary({client}){
                 />
             </div>
             <div className="mb-4">
-                <label
-                    className="text-gray-800"
-                    htmlFor="first_name"
-                >Apellido Paterno:</label>
+                <label className="text-gray-800" htmlFor="first_name">Apellido Paterno:</label>
                 <input 
                     id="first_name"
                     type="text"
@@ -31,10 +25,7 @@ function Formulary({client}){
                 />
             </div>
             <div className="mb-4">
-                <label
-                    className="text-gray-800"
-                    htmlFor="last_name"
-                >Apellido Materno:</label>
+                <label className="text-gray-800" htmlFor="last_name">Apellido Materno:</label>
                 <input 
                     id="last_name"
                     type="text"
@@ -45,10 +36,7 @@ function Formulary({client}){
                 />
             </div>
             <div className="mb-4">
-                <label
-                    className="text-gray-800"
-                    htmlFor="ci"
-                >CI:</label>
+                <label className="text-gray-800" htmlFor="ci">CI:</label>
                 <input 
                     id="ci"
                     type="number"
@@ -60,10 +48,7 @@ function Formulary({client}){
             </div>
 
             <div className="mb-4">
-                <label
-                    className="text-gray-800"
-                    htmlFor="phone"
-                >Teléfono:</label>
+                <label className="text-gray-800" htmlFor="phone">Teléfono:</label>
                 <input 
                     id="phone"
                     type="tel"
@@ -75,10 +60,7 @@ function Formulary({client}){
             </div>
 
             <div className="mb-4">
-                <label
-                    className="text-gray-800"
-                    htmlFor="direction"
-                >Dirección:</label>
+                <label className="text-gray-800" htmlFor="direction">Dirección:</label>
                 <textarea
                     as="textarea"
                     id="direction"

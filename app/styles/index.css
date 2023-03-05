@@ -5,6 +5,15 @@ body{
 .fix-scroll{
     overflow: hidden;
 }
+button,
+input[type="submit"],
+.month-box{
+    transition: all 0.3s ease;
+}
+input[disabled]{
+    opacity: 0.3;
+    cursor: default;
+}
 
 /* header */
 .header .menu li{
@@ -19,10 +28,19 @@ body{
     left: 0;
     top: 100%;
     display: none;
+    z-index: 99;
 }
-
 .header .menu li:hover .submenu{
     display: block;
+}
+.main-index{
+    height: calc(100vh - 64px);
+}
+main:not(.main-index){
+    margin-top: 50px;
+}
+.user-block{
+    margin-bottom: 130px;
 }
 
 /* partner */
@@ -30,13 +48,20 @@ body{
     top: 0;
     left: 150px;
 }
+.partner-view .sub-menu button{
+    min-width: 100%;
+}
 .partner-view nav{
     position: sticky;
     top: 1rem;
 }
+.partner-view .menu-sticky .sub-menu form{
+    top: 100%;
+    left: 0;
+}
 .grid_partner{
     display: grid;
-    grid-template-columns: 2fr 5fr;
+    grid-template-columns: 2fr 7fr;
 }
 
 /* tables */
@@ -48,9 +73,29 @@ body{
 .table-three th{
     width: 33.3333%;
 }
+.table-two td,
+.table-two th{
+    width: 50%;
+}
+.table-five td,
+.table-five th{
+    width: 20%;
+}
 .table-seven td,
 .table-seven th{
     width: 14.2857%;
+}
+.table-expenses tr{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 6fr 1fr 2fr;
+}
+.table-gps tr{
+    display: grid;
+    grid-template-columns: 1fr 1fr 5fr 2fr 2fr 2fr;
+}
+.table-rent tr{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
 }
 .table-month{
     position: fixed;
@@ -63,6 +108,13 @@ body{
     padding: 40px 50px;
     background-color: #F3F4F6;
     color: #000;
+    cursor: default;
+}
+.popup-help{
+    width: 100%;
+    padding: 40px 25px;
+    top: 0;
+    left: 0;
 }
 .table-month img{
     margin-left: auto;
@@ -75,4 +127,15 @@ input{
 }
 .month-box{
     cursor: pointer;
+}
+.month-box .image-edit{
+    transition: all 0.3s ease;
+}
+.month-box .image-edit:hover{
+    transform: scale(1.25);
+}
+.view-pdf{
+    position: absolute;
+    top: 20px;
+    right: 30px;
 }

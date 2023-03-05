@@ -1,53 +1,91 @@
 
-import { useLoaderData } from '@remix-run/react'
-import { useState } from 'react'
-import { getAllGps } from '~/models/partners.server'
-import GPSTotal from '~/components/reports/gps-total'
+import { useActionData, useLoaderData } from '@remix-run/react'
+import { getAllGps, addGPS } from '~/models/partners.server'
+import { redirect } from '@remix-run/node'
+import RowData from '~/components/reports/row-data'
+import SubMenu from '~/components/reports/sub-menu'
 
 export async function loader(){
-    const allGps = await getAllGps()
-    return allGps
+    allData = await getAllGps()
+    return allData
+}
+
+export async function action({request}){
+
+    const formData = await request.formData()
+    let data = Object.fromEntries(formData)
+    const errors = []
+    if(Object.values(data).includes('')){
+        errors.push('Todos los campos son requeridos')
+    }
+
+    // If exist a error return a error
+    if(Object.keys(errors).length){
+        return errors
+    }
+    data['date_ini'] = new Date(data.date_ini.replace(/-/g, '\/'))
+    data['date_fin'] = new Date(data.date_fin.replace(/-/g, '\/'))
+    data['date_pay'] = new Date(data.date_pay.replace(/-/g, '\/'))
+    data['amount'] = +data.amount
+    await addGPS(data)
+
+    return redirect('/report-gps')
 }
 
 function ReportGPS(){
 
-    const allGps = useLoaderData()
-    console.log(allGps)
+    const allData = useLoaderData()
+    const errors = useActionData()
 
-    const getTotalGps = (list) => {
+    const getTotalData = (list) => {
         const res = list?.reduce( (total, item) => total + parseInt(item.amount), 0 )
         return res
     }
 
     return (
-        <div className='container mx-auto'>
-            <h2 className='text-3xl text-indigo-900 font-bold text-center mb-5'>Reporte GPS de todos los Socios</h2>
+        <main className='container mx-auto'>
+            <h2 className='text-3xl text-indigo-900 font-bold text-center mb-5'>Reporte GPS</h2>
+            <div className='mb-4'>
+                <ul>
+                    <SubMenu errors={errors} >{'Agregar GPS'}</SubMenu>
+                </ul>
+            </div>
+            { allData.length > 0 ?
             <div className="table-partners">
-                <table className='table-fix w-full'>
+                <table className='table-gps w-full'>
                     <thead className='bg-indigo-600 text-white text-left'>
                         <tr>
-                            <th className='p-2'>Nombre</th>
-                            <th className='p-2'>Apellido Paterno</th>
-                            <th className='p-2'>Monto GPS</th>
+                            <th className='p-2'>Mes</th>
+                            <th className='p-2'>Monto</th>
+                            <th className='p-2'>Talonario + Descripción</th>
+                            <th className='p-2'>Fecha Inicio</th>
+                            <th className='p-2'>Fecha Fin</th>
+                            <th className='p-2'>Fecha Pagada</th>
                         </tr>
                     </thead>
                     <tbody className='border-l border-r border-gray-300'>
-                        { allGps.map( (gps, index) => (
-                            <GPSTotal gps={gps} key={index} />
+                        { allData.sort( (a,b) => new Date(a.date_ini) - new Date(b.date_ini) ).map( (data, index) => (
+                            <RowData data={data} key={index} />
                         ) ) }
                     </tbody>
                 </table>
-                <table className='table-fix w-full'>
+                <table className='table-gps w-full'>
                     <tbody>
                         <tr>
                             <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
                             <td className='p-2 border-l border-b font-bold uppercase bg-green-200 border-gray-300'>Total: </td>
-                            <td className='border-r border-b bg-green-200 p-2 border-gray-300'>{ getTotalGps(allGps)} Bs.</td>
+                            <td className='border-r border-b bg-green-200 p-2 border-gray-300'>{ getTotalData(allData)} Bs.</td>
                         </tr>
                     </tbody>
                 </table>
             </div>
-        </div>
+            :
+            <div className='text-xl'>No hay Ninguna GPS agregado aún</div>
+            }
+        </main>
     )
 }
 

@@ -1,9 +1,9 @@
 
-
 import { useLoaderData } from '@remix-run/react'
 import { useState } from 'react'
 import { getAllWeeks, getAllFines, getAllWithDrawn } from '~/models/partners.server'
 import RowWeek from '~/components/reports/row-week'
+import ReportRoadMapPdf from '~/components/reports/report-road-map-pdf'
 
 export async function loader(){
     const allWeeks = await getAllWeeks()
@@ -18,6 +18,9 @@ export async function loader(){
 }
 
 function ReportRoadMap(){
+
+    const [tableWeb, setTableWeb] = useState(true)
+    const [tablePDF, setTablePDF] = useState(false)
 
     const data = useLoaderData()
     const allWeeks = data.allWeeks
@@ -57,8 +60,20 @@ function ReportRoadMap(){
     }
 
     return (
-        <div className='container mx-auto'>
-            <h2 className='text-3xl text-indigo-900 font-bold text-center mb-5'>Reporte Hojas de Ruta de todos los Socios</h2>
+        <> 
+        <div className="view-pdf">
+            <button className='text-white ml-4 font-bold' onClick={ () => {
+                setTableWeb(!tableWeb)
+                setTablePDF(false)
+            } }>Vista Tabla</button>
+            <button className='text-white ml-4 font-bold' onClick={ () => {
+                setTableWeb(false)
+                setTablePDF(!tablePDF)
+            } }>Vista PDF</button>
+        </div>
+        { tableWeb && (
+        <main className='container mx-auto'>
+            <h2 className='text-3xl text-indigo-900 font-bold text-center mb-5'>Reporte Hojas de Ruta</h2>
             <div className="table-partners">
                 <table className='table-seven w-full'>
                     <thead className='bg-indigo-600 text-white text-left'>
@@ -110,7 +125,24 @@ function ReportRoadMap(){
                     </tbody>
                 </table>
             </div>
-        </div>
+        </main>
+        ) }
+
+        {/* Section PDF */}
+        { tablePDF && (
+            <ReportRoadMapPdf 
+                allWeeks={allWeeks}
+                getAmountFines={getAmountFines}
+                getAmountWithDrawn={getAmountWithDrawn}
+                getSheetsTotal={getSheetsTotal}
+                getSavingTotal={getSavingTotal}
+                getInsuranceTotal={getInsuranceTotal}
+                getTotalFines={getTotalFines}
+                getTotalWithDrawn={getTotalWithDrawn}
+                getTotal={getTotal}
+            />
+        ) }
+        </>
     )
 }
 
