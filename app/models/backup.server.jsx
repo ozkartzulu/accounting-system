@@ -5,8 +5,8 @@ export async function takeBackup(name) {
 
     const mongo_connector = new MongoDBDuplexConnector({
         connection: {
-            uri: `mongodb://127.0.0.1:27017`,
-            dbname: 'sistema-contable',
+            uri: process.env.SERVER_URL,
+            dbname: process.env.DB_NAME,
         },
     });
 
@@ -29,8 +29,8 @@ export async function takeBackup(name) {
 export async function restoreBackup(name) {
     const mongo_connector = new MongoDBDuplexConnector({
         connection: {
-            uri: `mongodb://127.0.0.1:27017`,
-            dbname: 'sistema-contable',
+            uri: process.env.SERVER_URL,
+            dbname: process.env.DB_NAME,
         },
     });
 

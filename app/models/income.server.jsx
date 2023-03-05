@@ -3,10 +3,10 @@ import { MongoClient } from 'mongodb'
 import {generateKey} from '~/utils/helpers'
 
 // Connection URL
-const url = 'mongodb://127.0.0.1:27017';
+const url = process.env.SERVER_URL;
 const client = new MongoClient(url);
 // Database Name
-const dbName = 'sistema-contable';
+const dbName = process.env.DB_NAME;
 
 
 // Add object air
