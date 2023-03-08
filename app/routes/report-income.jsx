@@ -1,8 +1,8 @@
 
 import { useLoaderData } from '@remix-run/react'
 import { useState } from 'react'
-import { getAllIncome, getAllRent } from '~/models/income.server'
-import { getAllAir, getAllDeport, getAllGps, getAllHanging } from '~/models/partners.server'
+import { getAllIncome, getAllRent, getAllHanging, getAllHangingSouth } from '~/models/income.server'
+import { getAllAir, getAllDeport, getAllGps } from '~/models/partners.server'
 import ReportIncomePdf from '~/components/reports/expenses/report-income-pdf'
 
 export async function loader(){
@@ -10,6 +10,7 @@ export async function loader(){
     const allGps = await getAllGps()
     const allRent = await getAllRent()
     const allHanging = await getAllHanging()
+    const allHangingSouth = await getAllHangingSouth()
     const allProDeport = await getAllDeport()
     const allIncome = await getAllIncome()
 
@@ -17,6 +18,7 @@ export async function loader(){
     const amountGps = allGps?.reduce( (total, data) => total + data.amount, 0 )
     const amountRent = allRent?.reduce( (total, data) => total + data.amount, 0 )
     const amountHanging = allHanging?.reduce( (total, data) => total + data.amount, 0 )
+    const amountHangingSouth = allHangingSouth?.reduce( (total, data) => total + data.amount, 0 )
     const amountProDeport = allProDeport?.reduce( (total, data) => total + data.amount, 0 )
     const amountSheets = allIncome?.reduce( (total, data) => total + data.sheets, 0 )
     const amountChangeName = allIncome?.reduce( (total, data) => {
@@ -37,7 +39,8 @@ export async function loader(){
         {name: "Aire", amount: amountAir},
         {name: "GPS", amount: amountGps},
         {name: "Alquiler Lineas", amount: amountRent},
-        {name: "Colgadas Minutos", amount: amountHanging},
+        {name: "Colgadas Minutos Norte", amount: amountHanging},
+        {name: "Colgadas Minutos Sud", amount: amountHangingSouth},
         {name: "Pro Deporte", amount: amountProDeport},
         {name: "Cambio de Nombre", amount: amountChangeName},
         {name: "Pro Accidente", amount: amountProAccident},

@@ -1,12 +1,12 @@
 
 import { useActionData, useLoaderData } from '@remix-run/react'
-import { getAllHanging, addHanging } from '~/models/income.server'
+import { getAllHangingSouth, addHangingSouth } from '~/models/income.server'
 import { redirect } from '@remix-run/node'
 import RowData from '~/components/reports/row-data'
 import SubMenu from '~/components/reports/sub-menu'
 
 export async function loader(){
-    allData = await getAllHanging()
+    allData = await getAllHangingSouth()
     return allData
 }
 
@@ -27,12 +27,12 @@ export async function action({request}){
     data['date_fin'] = new Date(data.date_fin.replace(/-/g, '\/'))
     data['date_pay'] = new Date(data.date_pay.replace(/-/g, '\/'))
     data['amount'] = +data.amount
-    await addHanging(data)
+    await addHangingSouth(data)
 
-    return redirect('/report-hanging')
+    return redirect('/report-hanging-south')
 }
 
-function ReportHanging(){
+function ReportHangingSouth(){
 
     const allData = useLoaderData()
     const errors = useActionData()
@@ -44,7 +44,7 @@ function ReportHanging(){
 
     return (
         <main className='container mx-auto'>
-            <h2 className='text-3xl text-indigo-900 font-bold text-center mb-5'>Reporte Colgadas Minutos Norte</h2>
+            <h2 className='text-3xl text-indigo-900 font-bold text-center mb-5'>Reporte Colgadas Minutos Sud</h2>
             <div className='mb-4'>
                 <ul>
                     <SubMenu errors={errors} >{'Agregar Colgadas'}</SubMenu>
@@ -89,4 +89,4 @@ function ReportHanging(){
     )
 }
 
-export default ReportHanging
+export default ReportHangingSouth

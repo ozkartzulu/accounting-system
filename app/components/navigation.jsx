@@ -31,7 +31,8 @@ function Navigation({user}){
                     <Link className='h-full flex items-center hover:text-black'>Ingresos</Link>
                     <ul className='submenu bg-gray-700 w-48 shadow-md'>
                         <li><Link to={'/report-pro-deport'} className='block p-2 hover:bg-gray-900'>Pro-Deporte</Link></li>
-                        <li><Link to={'/report-hanging'} className='block p-2 hover:bg-gray-900'>Colgadas Min</Link></li>
+                        <li><Link to={'/report-hanging'} className='block p-2 hover:bg-gray-900'>Colgadas Min Norte</Link></li>
+                        <li><Link to={'/report-hanging-south'} className='block p-2 hover:bg-gray-900'>Colgadas Min Sud</Link></li>
                         <li><Link to={'/report-gps'} className='block p-2 hover:bg-gray-900'>GPS</Link></li>
                         <li><Link to={'/report-air'} className='block p-2 hover:bg-gray-900'>Aire</Link></li>
                         <li><Link to={'/report-rent'} className='block p-2 hover:bg-gray-900'>Alquiler Linea</Link></li>

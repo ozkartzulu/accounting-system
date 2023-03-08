@@ -85,21 +85,6 @@ export async function getAllDeport(){
     return result;
 }
 
-// Get all objects of pro deport
-export async function getAllHanging(){
-    let result = ''
-    try {
-        await client.connect()
-        const db = client.db(dbName)
-        const collection = db.collection('hangings')
-        result = await collection.find({}).toArray()
-    } catch (error) {
-        console.log(error)
-    }
-    
-    return result;
-}
-
 // Get all partners that have change name registered
 export async function getChangeName(){
     let result = ''
@@ -350,19 +335,6 @@ export async function addDeport(data){
         await client.connect()
         const db = client.db(dbName);
         const collection = db.collection('pro-deport')
-        const result = await collection.insertOne(data)
-        console.log(result)
-    } catch (error) {
-        console.log(error)
-    } 
-}
-
-// Add object hanging minute
-export async function addHanging(data){
-    try {
-        await client.connect()
-        const db = client.db(dbName);
-        const collection = db.collection('hangings')
         const result = await collection.insertOne(data)
         console.log(result)
     } catch (error) {

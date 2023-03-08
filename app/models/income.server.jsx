@@ -22,6 +22,32 @@ export async function addRent(data){
     } 
 }
 
+// Add object hanging minute
+export async function addHanging(data){
+    try {
+        await client.connect()
+        const db = client.db(dbName);
+        const collection = db.collection('hangings')
+        const result = await collection.insertOne(data)
+        console.log(result)
+    } catch (error) {
+        console.log(error)
+    } 
+}
+
+// Add object hanging minutes in south side
+export async function addHangingSouth(data){
+    try {
+        await client.connect()
+        const db = client.db(dbName);
+        const collection = db.collection('hangings-south')
+        const result = await collection.insertOne(data)
+        console.log(result)
+    } catch (error) {
+        console.log(error)
+    } 
+}
+
 // Get all objects of air
 export async function getAllRent(){
     let result = ''
@@ -52,6 +78,36 @@ export async function getAllIncome(){
                 sheets: { $sum: "$road_map.weeks.sheets" }
             }}
         ]).toArray()
+    } catch (error) {
+        console.log(error)
+    }
+    
+    return result;
+}
+
+// Get all hanging
+export async function getAllHanging(){
+    let result = ''
+    try {
+        await client.connect()
+        const db = client.db(dbName)
+        const collection = db.collection('hangings')
+        result = await collection.find({}).toArray()
+    } catch (error) {
+        console.log(error)
+    }
+    
+    return result;
+}
+
+// Get all hanging of south
+export async function getAllHangingSouth(){
+    let result = ''
+    try {
+        await client.connect()
+        const db = client.db(dbName)
+        const collection = db.collection('hangings-south')
+        result = await collection.find({}).toArray()
     } catch (error) {
         console.log(error)
     }
