@@ -131,10 +131,10 @@ function EmployeeView(){
                                 </div>
                             </div>  
                             <div className=' area bg-white py-6 px-10 shadow-md mb-5'>
-                                <h3 className='mb-3 text-2xl font-black text-center'>Hojas de Ruta</h3>
+                                <h3 className='mb-3 text-2xl font-black text-center'>Ahorros</h3>
                                 { partner.road_map === undefined ? (
                                     <div>
-                                        <p>No hay ningúna hoja de ruta cancelada</p>                    
+                                        <p>No hay ningúna depósito aún</p>                    
                                     </div>
                                 ) : (
                                     <div className='area grid grid-cols-4 gap-2 mb-4'>
