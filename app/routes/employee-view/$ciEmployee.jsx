@@ -116,12 +116,10 @@ function EmployeeView(){
                         <div className='area user-block'>
                             <div className='area bg-white py-6 px-10 shadow-md mb-5 grid grid-cols-2'>
                                 <div className='flex flex-col justify-center'>
-                                    <p className='font-black text-lg'> <span className='inline-block w-44'>Nombre: </span>  <span className='text-gray-500 font-bold'>{partner.name}</span></p>
-                                    <p className='font-black text-lg'><span className='inline-block w-44'>Apellido Paterno: </span> <span className='text-gray-500 font-bold'>{partner.first_name}</span></p>
-                                    <p className='font-black text-lg'><span className='inline-block w-44'>Apellido Materno: </span><span className='text-gray-500 font-bold'>{partner.last_name}</span></p>
+                                    <p className='font-black text-lg'> <span className='inline-block w-44'>Nombre: </span><span className='text-gray-500 font-bold capitalize'>{partner.name}</span></p>
+                                    <p className='font-black text-lg'><span className='inline-block w-44'>Apellido Paterno: </span><span className='text-gray-500 font-bold capitalize'>{partner.first_name}</span></p>
+                                    <p className='font-black text-lg'><span className='inline-block w-44'>Apellido Materno: </span><span className='text-gray-500 font-bold capitalize'>{partner.last_name}</span></p>
                                     <p className='font-black text-lg'><span className='inline-block w-44'>CI: </span><span className='text-gray-500 font-bold'>{partner.ci}</span></p>
-                                    <p className='font-black text-lg'><span className='inline-block w-44'>Teléfono: </span><span className='text-gray-500 font-bold'>{partner.phone}</span></p>
-                                    <p className='font-black text-lg'><span className='inline-block w-44'>Dirección: </span><span className='text-gray-500 font-bold'>{partner.direction}</span></p>
                                     {partner.contribution?.amount && 
                                         <p className='font-black text-lg'><span className='inline-block w-44'>Depósito Inicial: </span><span className='text-gray-500 font-bold'>{partner.contribution?.amount - partner.contribution?.withdrawn_amount} Bs.</span></p>
                                     }

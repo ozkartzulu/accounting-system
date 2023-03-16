@@ -46,31 +46,6 @@ function FormEmployee({client}){
                     defaultValue={client?.ci}
                 />
             </div>
-
-            <div className="mb-4">
-                <label className="text-gray-800" htmlFor="phone">Teléfono:</label>
-                <input 
-                    id="phone"
-                    type="tel"
-                    className="mt-2 block w-full p-3 bg-gray-50"
-                    placeholder="77545512"
-                    name="phone"
-                    defaultValue={client?.phone}
-                />
-            </div>
-
-            <div className="mb-4">
-                <label className="text-gray-800" htmlFor="direction">Dirección:</label>
-                <textarea
-                    as="textarea"
-                    id="direction"
-                    type="text"
-                    className="mt-2 block w-full p-3 bg-gray-50 h-20 align-self"
-                    placeholder="Av. Simon lopez #30"
-                    name="direction"
-                    defaultValue={client?.direction}
-                />
-            </div>
         </>
     )
 }

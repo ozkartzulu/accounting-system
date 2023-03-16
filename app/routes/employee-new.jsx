@@ -20,6 +20,9 @@ export async function action({request}){
     }
     data['road_map'] = []
     data['status'] = true
+    data['name'] = data.name.toLowerCase()
+    data['first_name'] = data.first_name.toLowerCase()
+    data['last_name'] = data.last_name.toLowerCase()
     await addEmployee(data)
 
     return redirect('/employees')
@@ -32,7 +35,7 @@ function EmployeeNew(){
     return (
         <main className="social-new">
             <div className="container mx-auto">
-                <h2 className="text-3xl text-indigo-900 font-bold text-center mb-5">Registro Nuevo Socio</h2>
+                <h2 className="text-3xl text-indigo-900 font-bold text-center mb-5">Registro Nuevo Asalariado</h2>
                 <div className="form w-3/4 mx-auto shadow rounded-md py-10 px-4 bg-violet-100">
                     { errors?.length && errors.map( (error,i) => <Error key={i}>{error}</Error> ) }
                     <Form method='post' noValidate>

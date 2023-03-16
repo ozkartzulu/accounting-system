@@ -15,7 +15,9 @@ export async function action({request, params}){
     const formData = await request.formData()
     const data = Object.fromEntries(formData)
     const errors = []
-    if(Object.values(data).includes('')){
+    const dataValidate = {...data}
+    delete dataValidate.direction
+    if(Object.values(dataValidate).includes('')){
         errors.push('Todos los campos son requeridos')
     }
 

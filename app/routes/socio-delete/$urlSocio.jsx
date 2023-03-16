@@ -1,9 +1,11 @@
 
 import { redirect } from '@remix-run/node'
-import { deletePartner } from '~/models/partners.server'
+import { deletePartner, setPointer, getPartners } from '~/models/partners.server'
 
 export async function action({params}){
-    deletePartner(params.urlSocio)
+    await deletePartner(params.urlSocio)
+    const partners = await getPartners()
+    await setPointer(partners.length)
     return redirect('/socios')
 }
 

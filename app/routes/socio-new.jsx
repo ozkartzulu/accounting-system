@@ -2,7 +2,7 @@ import { Form, useActionData} from '@remix-run/react'
 import Formulary from '~/components/formulary'
 import Error from '~/components/error'
 import { redirect } from '@remix-run/node'
-import { addPartner } from '~/models/partners.server'
+import { addPartner, getPointer, setPointer, addPointer } from '~/models/partners.server'
 
 
 export async function action({request}){
@@ -10,7 +10,10 @@ export async function action({request}){
     const formData = await request.formData()
     let data = Object.fromEntries(formData)
     const errors = []
-    if(Object.values(data).includes('')){
+    const dataValidate = {...data}
+    delete dataValidate.direction
+
+    if(Object.values(dataValidate).includes('')){
         errors.push('Todos los campos son requeridos')
     }
 
@@ -18,7 +21,23 @@ export async function action({request}){
     if(Object.keys(errors).length){
         return errors
     }
+
+    const pointer = await getPointer()
+    let pointerNum = 1
+
+    if(pointer.length === 0){
+        await addPointer({number: 1})
+    }else{
+        pointerNum = pointer[0].number + 1
+        await setPointer(pointerNum)
+    }
     data['road_map'] = []
+    data['name'] = data.name.toLowerCase()
+    data['first_name'] = data.first_name.toLowerCase()
+    data['last_name'] = data.last_name.toLowerCase()
+    data['direction'] = data.direction ? data.direction.toLowerCase() : ''
+    data['pointer'] = pointerNum
+
     await addPartner(data)
 
     return redirect('/socios')

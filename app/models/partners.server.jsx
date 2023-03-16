@@ -223,6 +223,71 @@ export async function addPartner(data){
     } 
 }
 
+export async function addPointer(data){
+    try {
+        await client.connect()
+        const db = client.db(dbName);
+        const collection = db.collection('pointer')
+        const result = await collection.insertOne(data)
+    } catch (error) {
+        console.log(error)
+    } 
+}
+
+export async function setPointer(number){
+    try {
+        await client.connect()
+        const db = client.db(dbName);
+        const collection = db.collection('pointer')
+        const result = await collection.updateOne(
+            {},
+            {
+                $set: {
+                    "number": number
+                }
+            }
+            
+        )
+    } catch (error) {
+        console.log(error)
+    } 
+}
+
+export async function setPointerPartner(ciPartner, number){
+    try {
+        await client.connect()
+        const db = client.db(dbName);
+        const collection = db.collection('socios')
+        const result = await collection.updateOne(
+            {ci: ciPartner},
+            {
+                $set: {
+                    "pointer": number
+                }
+            }
+            
+        )
+    } catch (error) {
+        console.log(error)
+    } 
+}
+
+export async function getPointer() {
+    // Use connect method to connect to the server
+    let result = ''
+    try {
+        await client.connect()
+        const db = client.db(dbName);
+        const collection = db.collection('pointer')
+        result = await collection.find({}).toArray()
+    } catch (error) {
+        console.log(error)
+    }
+    
+  
+    return result;
+}
+
 // Add month in a partner
 export async function addMonth(ciPartner, data){
     try {

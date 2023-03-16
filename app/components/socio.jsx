@@ -12,8 +12,9 @@ function Socio({partner}){
     const {_id, ci} = partner
     return (
         <tr className="border-b">
-            <td className="p-2">{partner.name}</td>
-            <td className="p-2">{partner.first_name}</td>
+            <td className="p-2 capitalize">{partner?.pointer}</td>
+            <td className="p-2 capitalize">{partner.name}</td>
+            <td className="p-2 capitalize">{partner.first_name}</td>
             <td className="p-2">{partner.ci}</td>
             <td className="p-2">{partner.phone}</td>
             <td className="">
