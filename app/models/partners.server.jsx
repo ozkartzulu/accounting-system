@@ -417,7 +417,7 @@ export async function addWeek(ciPartner, data){
             {ci: ciPartner, "road_map.id": data.month},
             {
                 $push: {
-                    "road_map.$.weeks": {id: data.id, week: data.week, insurance: data.insurance, saving: data.saving, sheets: data.sheets }
+                    "road_map.$.weeks": {id: data.id, week: data.week, date: data.date, insurance: data.insurance, saving: data.saving, sheets: data.sheets }
                 }
             }
         )

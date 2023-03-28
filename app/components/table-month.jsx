@@ -1,9 +1,9 @@
 
 import image from '../../public/img/close.svg'
 import { useState, useEffect } from 'react'
-import { fixDate } from '~/utils/helpers'
+import { fixDate, parseDates, getMonthLiteral } from '~/utils/helpers'
 
-function TableMonth({weeks, fines, helps, withdrawn, setShowTable, insured}){
+function TableMonth({weeks, month, fines, helps, withdrawn, setShowTable, insured}){
 
     const [table, setTable] = useState(true)
 
@@ -65,9 +65,11 @@ function TableMonth({weeks, fines, helps, withdrawn, setShowTable, insured}){
                         </tr>
                     </thead>
                     <tbody className='border-l border-r border-gray-300'>
-                        { weeks.map( (row, index) => (
+                        { weeks.map( (row, index) => (   
                             <tr key={index} className="border-b border-gray-300">
-                                <td className="p-2">{row.week}</td>
+                                <td className="p-2">{parseInt(row.week.slice(6), 10)} 
+                                    <span className='ml-5'>{`(${parseDates(row.week)[0].getDate()} - ${parseDates(row.week)[parseDates(row.week).length-1].getDate()} de ${getMonthLiteral(month)})`  }</span> 
+                                </td>
                                 <td className="p-2">{row.sheets} Bs.</td>
                                 <td className="p-2">{row.saving} Bs.</td>
                                 <td className="p-2">{ row.insurance } Bs.</td>

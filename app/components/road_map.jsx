@@ -123,7 +123,7 @@ function RoadMap({ci, month, errors, generalForms}){
             onClick={ (e) => showTableMonth(e) }
         >
             {showTable && (
-                <TableMonth weeks={month.weeks} fines={month.fines} helps={month.help} withdrawn={month.withdrawn} setShowTable={setShowTable} insured={insured} />
+                <TableMonth weeks={month.weeks} month={month.month} fines={month.fines} helps={month.help} withdrawn={month.withdrawn} setShowTable={setShowTable} insured={insured} />
             )}
             {showFines && (
                 <TableFines errors={errors} setShowFines={setShowFines} fines={month.fines} month_id={month.id} />
@@ -161,14 +161,15 @@ function RoadMap({ci, month, errors, generalForms}){
                     { formWeek && (
                     <Form className='flex p-3 shadow-md absolute flex-col bg-gray-300 gap-2 text-gray-700 z-50 rounded-sm w-72' noValidate method='post' >
                         { showError && <Error>{'Por favor llenar datos'}</Error>}
-                        <select className='py-1.5 px-2 rounded-sm' name="week" id="week">
+                        {/* <select className='py-1.5 px-2 rounded-sm' name="week" id="week">
                             <option value="">-- Selecione Semana --</option>
                             <option value="1">Semana 1</option>
                             <option value="2">Semana 2</option>
                             <option value="3">Semana 3</option>
                             <option value="4">Semana 4</option>
                             <option value="5">Semana 5</option>
-                        </select>
+                        </select> */}
+                        <input className='py-0.5 px-2 rounded-sm' type="week" id='week' name='week' />
                         <input type="number" placeholder='Seguro Médico. Ej: 20' id="insurance" name='insurance' className='placeholder:text-gray-700 py-0.5 px-2 rounded-sm'/>
                         <input type="number" placeholder='Ahorro. Ej: 60' id="saving" name='saving' className='placeholder:text-gray-700 py-0.5 px-2 rounded-sm'/>
                         <input type="number" placeholder='Hojas. Ej: 40' id="sheets" name='sheets' className='placeholder:text-gray-700 py-0.5 px-2 rounded-sm'/>

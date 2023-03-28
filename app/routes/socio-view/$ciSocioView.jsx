@@ -9,7 +9,7 @@ import { getPartner, addMonth, addWeek, addGPS, addFines, addWithDrawn,
 import RoadMap from '~/components/road_map'
 import Basket from '~/components/basket'
 import ButtonAddBasket from '~/components/partner/button-add-basket'
-import { generateKey, currentDate } from '~/utils/helpers'
+import { generateKey, currentDate, weekCount, parseDates } from '~/utils/helpers'
 import SubMenuChangeName from '~/components/partner/sub-menu-change-name'
 import SubMenuProAccident from '~/components/partner/sub-menu-pro-accident'
 import SubMenuProFurniture from '~/components/partner/sub-menu-pro-furniture'
@@ -50,10 +50,13 @@ export async function action({request, params}){
             id: data.week_id,
             week: data.week,
             month: data.month,
+            date: new Date(),
             insurance: +data.insurance,
             saving: +data.saving,
             sheets: +data.sheets
         }
+        // console.log(parseDates(data.weekDays))
+        // console.log(parseInt(data.weekDays.slice(6), 10))
         await addWeek(params.ciSocioView, sendData)
     }
 
