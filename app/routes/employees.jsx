@@ -113,7 +113,6 @@ function Employees(){
                                 <th className='p-2'>Nombre</th>
                                 <th className='p-2'>Apellido Paterno</th>
                                 <th className='p-2'>CI</th>
-                                <th className='p-2'>Teléfono</th>
                                 <th className='p-2'>Ahorro</th>
                                 <th className='p-2'>Acciones</th>  
                             </tr>
