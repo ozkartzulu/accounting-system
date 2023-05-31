@@ -1,53 +1,48 @@
-# Welcome to Remix!
 
-- [Remix Docs](https://remix.run/docs)
+# Accounting System Company Transport
 
-## Development
+This project was developed for manager a Transport Company, the incomes, the expenses, register of partners, register of operators, generate reports.
 
-From your terminal:
+The primary goal of this project is to expedite the process of registering income and expenses of all partners.
 
-```sh
-npm run dev
+The tools used for develop:
+- Remix for Frond end and Back end.
+- MongoDB for Database.
+- Tailwind CSS for styles.
+
+## Table of Contents
+1. [Requirements](#requirements)
+1. [Installation](#installation)
+1. [Deployment](#deployment)
+
+## Requirements
+
+The project was developed with
+* node `^18.12.0`
+* npm `^8.19.2`
+
+## Installation
+
+For the install on local environment, clone the repository
+
+```bash
+$ git clone https://github.com/ozkartzulu/accounting-system.git <my-project-name>
+$ cd <my-project-name>
 ```
 
-This starts your app in development mode, rebuilding assets on file changes.
+When that's done, install the project dependencies. It is recommended that you use `npm install` will suffice.
+
+```bash
+$ npm install  # Install project dependencies
+```
 
 ## Deployment
 
-First, build your app for production:
+This project uses the mongoDB database, for it to work it must be installed, then the daemon service will start it.
 
-```sh
-npm run build
-```
+Must be create the file .env, inside save the variables 'SERVER_URL' and 'DB_NAME'
 
-Then run the app in production mode:
-
-```sh
-npm start
-```
-
-Now you'll need to pick a host to deploy it to.
-
-### DIY
-
-If you're familiar with deploying node applications, the built-in Remix app server is production-ready.
-
-Make sure to deploy the output of `remix build`
-
-- `build/`
-- `public/build/`
-
-### Using a Template
-
-When you ran `npx create-remix@latest` there were a few choices for hosting. You can run that again to create a new project, then copy over your `app/` folder to the new project that's pre-configured for your target server.
-
-```sh
-cd ..
-# create a new project, and pick a pre-configured host
-npx create-remix@latest
-cd my-new-remix-app
-# remove the new project's app (not the old one!)
-rm -rf app
-# copy your app over
-cp -R ../my-old-remix-app/app app
+```bash
+SERVER_URL="mongodb://127.0.0.1:27017" 
+DB_NAME="name-database"
 ```
