@@ -46,3 +46,8 @@ Must be create the file .env, inside save the variables 'SERVER_URL' and 'DB_NAM
 SERVER_URL="mongodb://127.0.0.1:27017" 
 DB_NAME="name-database"
 ```
+
+For view a demo, the project was [deployed in platform versel](http://https://accounting-system-blond.vercel.app/ "deployed in platform versel")
+
+You can create a new user or you can use username: test and password: test
+
